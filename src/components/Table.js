@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import axios from "axios"
 
 const styles = () =>
     createStyles({
@@ -22,6 +23,13 @@ class BasicTable extends React.Component {
             users: [],
             search: ""
         }
+
+    }
+    componentDidMount(){
+        axios.get("https://randomuser.me/api/?results=25&nat=us").then(res => {
+            console.log(res.data)
+            this.setState({users: res.data.results})
+        })
     }
     render() {
         const { classes } = this.props;
@@ -38,17 +46,17 @@ class BasicTable extends React.Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {/* {rows.map((row) => (
-            <TableRow key={row.name}>
+                        {this.state.users.map((user) => (
+            <TableRow key={user.name}>
               <TableCell component="th" scope="row">
-                {row.name}
+                <img src = {user.picture.thumbnail}></img>
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell align="right">{user.name.first} {user.name.last}</TableCell>
+              <TableCell align="right">{user.phone}</TableCell>
+              <TableCell align="right">{user.email}</TableCell>
+              <TableCell align="right">{user.dob.date}</TableCell>
             </TableRow>
-          ))} */}
+          ))}
                     </TableBody>
                 </Table>
             </TableContainer>
